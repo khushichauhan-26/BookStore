@@ -4,9 +4,11 @@ import cors from 'cors';
 import Book from './models/bookModel.js'; // Import the Book model
 import dotenv from 'dotenv';
 dotenv.config(); // Load environment variables from .env file
+import bookRoutes from './routes/bookRoutes.js'; // Import book routes
 
 const app = express();    //CREATES HTTP SERVER
 
+//json- javascript ubject notation, used to send data in a structured format
 app.use(express.json());   //middleware
 
 //get routes-less detail store, more expected, data in url (after ?).(req.query)
@@ -17,22 +19,10 @@ app.use(express.json());   //middleware
 
 
 //routes
+app.use('/book', bookRoutes); // Use book routes for /books endpoint
 app.get('/', (req, res) => {
   res.send("first backend app");
-});
-app.post('/books', async (req, res) => {
-    const { title, author, genre, publishedDate } = req.body;
-    const newbook = new Book({title, author, genre, publishedDate});
-    try {
-        await newbook.save();
-        res.status(201).json({message: "Book added successfully"});
-    } 
-    catch (error) {
-        res.status(400).json({message: "Error adding book", error: error.message});
-    }
-})
-
-
+}); 
 
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => {
