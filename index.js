@@ -1,3 +1,5 @@
+//leetcode75-DSA
+
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -5,6 +7,7 @@ import Book from './models/bookModel.js'; // Import the Book model
 import dotenv from 'dotenv';
 dotenv.config(); // Load environment variables from .env file
 import bookRoutes from './routes/bookRoutes.js'; // Import book routes
+import errorHandler from './middleware/errorHandler.js';
 
 const app = express();    //CREATES HTTP SERVER
 
@@ -23,6 +26,8 @@ app.use('/book', bookRoutes); // Use book routes for /books endpoint
 app.get('/', (req, res) => {
   res.send("first backend app");
 }); 
+
+app.use(errorHandler); // Centralized error handler
 
 mongoose.connect(process.env.MONGODB_URI)
 .then(() => {

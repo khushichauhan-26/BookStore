@@ -1,17 +1,28 @@
 import express from 'express';
 import Book from '../models/bookModel.js'; 
+import mongoose from 'mongoose';
+import addbook from '../controllers/addbook.js';
+import allbooks from '../controllers/allbooks.js';
+import updatebook from '../controllers/updatebook.js';
+import deletebook from '../controllers/deletebook.js';
+import getbook from '../controllers/getbook.js';
 const router = express.Router();
 
-router.post('/addbook', async (req, res) => {
-    const { title, author, genre, publishedDate } = req.body;
-    const newbook = new Book({title, author, genre, publishedDate});
-    try {
-        await newbook.save();
-        res.status(201).json({message: "Book added successfully"});
-    } 
-    catch (error) {
-        res.status(400).json({message: "Error adding book", error: error.message});
-    }
-})
+// Add a new book
+router.post('/addbook', addbook)
+
+// Get all books by id
+router.get('/allbooks/:id', getbook)
+
+// all books with pagination
+router.get('/allbooks', allbooks);
+
+//update book by ID
+router.put('/allbooks/:id', updatebook);
+
+
+router.delete('/allbooks/:id', deletebook);
+
+
 
 export default router;
